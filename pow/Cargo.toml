@@ -1,12 +1,18 @@
 [package]
-name = "spongefish-pow"
+name = "provekit-spongefish-pow"
+description = "Proof-of-work challenges for spongefish, the Fiat-Shamir library."
 authors = [
     "Giacomo Fenzi <giacomofenzi@outlook.com>",
     "Remco Bloemen <remco@wicked.ventures>",
 ]
 edition.workspace = true
+homepage.workspace = true
 license.workspace = true
-version.workspace = true
+repository.workspace = true
+version = "0.2.0"
+
+[lib]
+name = "spongefish_pow"
 
 [lints]
 workspace = true

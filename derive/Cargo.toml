@@ -1,10 +1,13 @@
 [package]
-name = "spongefish-derive"
+name = "provekit-spongefish-derive"
 edition.workspace = true
+homepage.workspace = true
 license.workspace = true
+repository.workspace = true
 version.workspace = true
 
 [lib]
+name = "spongefish_derive"
 proc-macro = true
 
 [dependencies]
@@ -13,4 +16,4 @@ quote = "1.0"
 proc-macro2 = "1.0"
 
 [dev-dependencies]
-spongefish = { path = "../spongefish", default-features = false, features = ["sha3"] }
+spongefish = { package = "provekit-spongefish", version = "=0.2.0", path = "../spongefish", default-features = false, features = ["sha3"] }

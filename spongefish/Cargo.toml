@@ -1,13 +1,18 @@
 [package]
-name = "spongefish"
+name = "provekit-spongefish"
 authors = [
     "Michele Orrù <m@orru.net>",
     "Giacomo Fenzi <giacomofenzi@outlook.com>",
 ]
 description = "An implementation of the Fiat--Shamir transformation from Duplex Sponges."
 edition.workspace = true
+homepage.workspace = true
 license.workspace = true
-version.workspace = true
+repository.workspace = true
+version = "0.2.0"
+
+[lib]
+name = "spongefish"
 
 [lints]
 workspace = true
