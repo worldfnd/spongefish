@@ -88,7 +88,7 @@ impl<D: BlockSizeUser + Digest + Clone + FixedOutputReset> DuplexSpongeInterface
         } else if let Mode::Squeeze(i) = self.mode {
             // Add the squeeze mask, current digest, and index
             let mut output_hasher_prefix = self.hasher.clone();
-            Digest::update(&mut output_hasher_prefix, i.to_be_bytes());
+            Digest::update(&mut output_hasher_prefix, (i as u64).to_be_bytes());
             let digest = output_hasher_prefix.finalize();
             // Copy the digest into the output, and store the rest for later
             let chunk_len = usize::min(output.len(), Self::DIGEST_SIZE);
@@ -147,7 +147,7 @@ impl<D: BlockSizeUser + Digest + Clone + Reset> Hash<D> {
             let mut squeeze_hasher = D::new();
             Digest::update(&mut squeeze_hasher, Self::mask_squeeze_end());
             Digest::update(&mut squeeze_hasher, &self.cv);
-            Digest::update(&mut squeeze_hasher, byte_count.to_be_bytes());
+            Digest::update(&mut squeeze_hasher, (byte_count as u64).to_be_bytes());
             self.cv = Digest::finalize(squeeze_hasher);
 
             // set the sponge state in absorb mode
@@ -258,4 +258,26 @@ fn test_shosha() {
     sho.ratchet();
     sho.squeeze(&mut got[..63]);
     assert_eq!(&got[..63], expected);
+}
+
+/// Both squeeze counters are `usize`, so they are hashed as `u64` to keep transcripts identical on
+/// 32- and 64-bit targets. This covers the squeeze index and the squeezed byte count.
+#[cfg(all(test, feature = "sha2"))]
+#[test]
+fn test_squeeze_counters_are_target_independent() {
+    let mut sho = Hash::<sha2::Sha256>::default();
+    let mut got = [0u8; 96];
+    sho.absorb(b"abc");
+    sho.squeeze(&mut got[..40]);
+    sho.absorb(b"def");
+    sho.squeeze(&mut got[40..]);
+
+    let got: alloc::string::String = got
+        .iter()
+        .map(|byte| alloc::format!("{byte:02x}"))
+        .collect();
+    assert_eq!(
+        got,
+        "1148309e4bafeff292c34afadd013dea4c5d216bee96808d8c0d1ce763699c96ca16f14b8fd803a2893f6a51b5b66966236bb19b4caa726a942dbf5468fdf8773eb8892e1fffc0edf47db0f8715927bda25181fe846668c2728f270f9cf64df8"
+    );
 }
