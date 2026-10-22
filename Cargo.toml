@@ -63,7 +63,7 @@ hex = "0.4.3"
 k256 = "^0.13"
 k12 = "^0.3.0"
 keccak = "^0.1.5"
-spongefish = { package = "provekit-spongefish", version = "=0.2.0", path = "spongefish" }
+spongefish = { package = "provekit-spongefish", version = "=0.2.1", path = "spongefish" }
 spongefish-derive = { package = "provekit-spongefish-derive", version = "=0.1.0", path = "derive" }
 spongefish-poseidon2 = { path = "poseidon2" }
 spongefish-circuit = { path = "circuit" }
